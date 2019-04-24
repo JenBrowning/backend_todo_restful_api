@@ -8,6 +8,7 @@ verify_ssl = true
 [packages]
 flask-restful = "*"
 pusher = "*"
+pep8 = "*"
 
 [requires]
 python_version = "2.7"

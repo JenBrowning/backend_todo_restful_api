@@ -6,6 +6,7 @@ from flask import Flask
 from flask_restful import reqparse, abort, Api, Resource
 import datetime
 
+
 app = Flask(__name__)
 api = Api(app)
 
@@ -20,11 +21,13 @@ def abort_if_todo_doesnt_exist(todo_id):
 
 parser = reqparse.RequestParser()
 parser.add_argument('title', type=str, default="Please enter a title")
-parser.add_argument('due_date', type=str, default="When do you need this done?")
+parser.add_argument('due_date', type=str, default="When is this due?")
 parser.add_argument('completed', type=bool, default=False)
+
 
 class TodoList(Resource):
     """Create a To Do List for yo'self"""
+
     def get(self, todo_id):
         abort_if_todo_doesnt_exist(todo_id)
         return todo_list
@@ -34,7 +37,7 @@ class TodoList(Resource):
         args.parser.parse_args()
         todo_id = int(todo_id) + 1
         todo_id = str(todo_id)
-        todo_list[todo_id]= {
+        todo_list[todo_id] = {
             "completed_date": str(current_datetime),
             "creation_date": str(current_datetime),
             "last_update": str(current_datetime),
@@ -42,8 +45,8 @@ class TodoList(Resource):
             "completed": args["completed"],
             "due_date": args["due_date"]
         }
+    return todo_id, 201
 
-        return todo_id, 201
 
 class TodoItem(Resource):
     """Create some To Do Items for yo'self"""
@@ -62,12 +65,13 @@ class TodoItem(Resource):
         if args['completed']:
             todo_list[todo_id].update({'completed': args['completed']})
             if args['completed']is True:
-                todo_list[todo_id].update({'Completed on': str(current_datetime)})
+                todo_list[todo_id].update
+                ({'Completed on': str(current_datetime)})
             if args['completed']is False:
                 todo_list[todo_id].update({'competed_date': 'Seriously??'})
         if args['completed_date']:
-            todo_list[todo_id].update({'completed_date': str(current_datetime)})
-        
+            todo_list[todo_id].update
+            ({'completed_date': str(current_datetime)})
         return 201
 
     def delete_item(self, todo_id):
@@ -75,10 +79,9 @@ class TodoItem(Resource):
         del todo_list[todo_id]
 
         return 204
-     
 api.add_resource(TodoList, '/todos')
 api.add_resource(TodoItem, '/todos/<todo_id>')
 
-
 if __name__ == '__main__':
     app.run(debug=True)
+    \n
