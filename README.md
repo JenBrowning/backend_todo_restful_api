@@ -41,3 +41,15 @@ docstrings on methods
 clean repo: No virtual environments or log files!
 Discoverable unit tests for all api methods and responses
 
+Curl commands:
+
+delete - curl http://localhost:5000/todos/todo2 -X DELETE -v
+
+get - curl http://localhost:5000/todos/todo3
+
+get the list - 
+
+
+add a new todo - curl http://localhost:5000/todos -d "task=something new" -X POST -v
+
+update a todo - curl http://localhost:5000/todos/todo3 -d "task=something different" -X PUT -v

@@ -16,7 +16,7 @@ current_datetime = datetime.datetime.now()
 
 
 def abort_if_todo_doesnt_exist(todo_id):
-    if todo_id not in todo_list:
+    if todo_id not in todos:
         abort(404, message="This To Do Item {} doesn't exist".format(todo_id))
 
 parser = reqparse.RequestParser()
@@ -28,16 +28,15 @@ parser.add_argument('completed', type=bool, default=False)
 class TodoList(Resource):
     """Create a To Do List for yo'self"""
 
-    def get(self, todo_id):
-        abort_if_todo_doesnt_exist(todo_id)
-        return todo_list
+    def get(self):
+        return todos
 
     def post(self):
         global todo_id
-        args.parser.parse_args()
+        args = parser.parse_args()
         todo_id = int(todo_id) + 1
         todo_id = str(todo_id)
-        todo_list[todo_id] = {
+        todos[todo_id] = {
             "completed_date": str(current_datetime),
             "creation_date": str(current_datetime),
             "last_update": str(current_datetime),
@@ -45,43 +44,41 @@ class TodoList(Resource):
             "completed": args["completed"],
             "due_date": args["due_date"]
         }
-    return todo_id, 201
+        return todo_id, 201
 
 
 class TodoItem(Resource):
     """Create some To Do Items for yo'self"""
     def get(self, todo_id):
-        return todo_list[todo_id]
+        return todos[todo_id]
 
     def put(self):
         """update a todo item"""
-        args.parser.parse_args()
+        args = parser.parse_args()
         if args['title']:
-            todo_list[todo_id].update({'title': args['title']})
+            todos[todo_id].update({'title': args['title']})
         if args['creation_date']:
-            todo_list[todo_id].update({'created on': str(current_datetime)})
+            todos[todo_id].update({'created on': str(current_datetime)})
         if args['last_update']:
-            todo_list[todo_id].update({'Updated on': str(current_datetime)})
+            todos[todo_id].update({'Updated on': str(current_datetime)})
         if args['completed']:
-            todo_list[todo_id].update({'completed': args['completed']})
+            todos[todo_id].update({'completed': args['completed']})
             if args['completed']is True:
-                todo_list[todo_id].update
-                ({'Completed on': str(current_datetime)})
+                todos[todo_id].update({'Completed on': str(current_datetime)})
             if args['completed']is False:
-                todo_list[todo_id].update({'competed_date': 'Seriously??'})
+                todos[todo_id].update({'competed_date': 'Seriously??'})
         if args['completed_date']:
-            todo_list[todo_id].update
-            ({'completed_date': str(current_datetime)})
+            todos[todo_id].update({'completed_date': str(current_datetime)})
         return 201
 
     def delete_item(self, todo_id):
         """Deletes a to do item on the list"""
-        del todo_list[todo_id]
+        abort_if_todo_doesnt_exist(todo_id)
+        del todos[todo_id]
 
         return 204
 api.add_resource(TodoList, '/todos')
 api.add_resource(TodoItem, '/todos/<todo_id>')
 
 if __name__ == '__main__':
-    app.run(debug=True)
-    \n
+    app.run(debug=True)  
