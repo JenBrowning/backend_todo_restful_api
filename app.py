@@ -57,21 +57,22 @@ class TodoItem(Resource):
         args = parser.parse_args()
         if args['title']:
             todos[todo_id].update({'title': args['title']})
-        if args['creation_date']:
-            todos[todo_id].update({'created on': str(current_datetime)})
-        if args['last_update']:
-            todos[todo_id].update({'Updated on': str(current_datetime)})
+        # if args['creation_date']:
+        #     todos[todo_id].update({'created on': str(current_datetime)})
+        # if args['last_update']:
+        #     todos[todo_id].update({'Updated on': str(current_datetime)})
         if args['completed']:
             todos[todo_id].update({'completed': args['completed']})
             if args['completed']is True:
                 todos[todo_id].update({'Completed on': str(current_datetime)})
-            if args['completed']is False:
-                todos[todo_id].update({'competed_date': 'Seriously??'})
-        if args['completed_date']:
-            todos[todo_id].update({'completed_date': str(current_datetime)})
+            if args['completed']is not True:
+                todos[todo_id].update({'Completed_on: 'Seriously??'})
+        todos[todo_id].update({"last_update": str(current_datetime)})
+        # if args['completed_date']:
+        #     todos[todo_id].update({'completed_date': str(current_datetime)})
         return 201
 
-    def delete_item(self, todo_id):
+    def delete(self, todo_id):
         """Deletes a to do item on the list"""
         abort_if_todo_doesnt_exist(todo_id)
         del todos[todo_id]
